@@ -15,8 +15,10 @@ class SearchInput extends Component {
     render() { 
         return ( 
             <div>
+
                 <input name='card-search' type="text" onChange={e => this.props.handleInput(e.target.value)} placeholder='Search a card name'/>
-                <button onClick={this.props.handleSubmit }>Search</button>
+                
+                    <button onClick={this.props.handleSubmit }>Search</button>
             </div>
          );
     }

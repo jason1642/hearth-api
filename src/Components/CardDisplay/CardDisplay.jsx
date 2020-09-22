@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './CardDisplay.css'
 
 class CardDisplay extends Component {
     constructor(props) {
@@ -19,12 +20,12 @@ class CardDisplay extends Component {
 
 
             {this.props.gameDataArray !== undefined ? <>
-            {/* <h1>{this.props.gameDataArray.cards[5].id}</h1>
-            <img src={this.props.gameDataArray.cards[30].image} alt='card' /> */}
+            
             {console.log(this.props.gameDataArray.cards[0])}
-            {this.props.gameDataArray.cards.map(ele=>
-            <><h1>{ele.id}</h1>
-            <img src={ele.image} alt='card' /></>
+
+            {this.props.gameDataArray.cards.slice(0,10).map((ele, index)=>
+            <div onClick={()=>this.props.onClickAddCardToArray(index)} className='single-card-display'><p>{ele.flavorText}</p>
+            <img className='single-card-display-image' src={ele.image} alt='card' /></div>
             )}
             </> : <></>}
         </div> );

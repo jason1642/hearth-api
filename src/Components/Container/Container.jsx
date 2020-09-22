@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Container.css'
 import CardDisplay from '../CardDisplay/CardDisplay.jsx'
 import SearchInput from '../SearchInput/SearchInput.jsx'
+import SelectedCardsArray from '../SelectedCardsArray/SelectedCardsArray.jsx'
 import axios from 'axios'
 
 
@@ -10,26 +11,21 @@ class Container extends Component {
     constructor(props){
         super(props)
     this.state = { 
-        gameData : undefined
+        gameData : undefined,
+        selectedCards: []
      }
     }
 
-    // componentDidMount = async () => {
-    //     const API_KEY = "5TcC5bPPSpTi6c90Q5OTeAYg25RQ3bAe";
-    //     // const response = await axios(`https://us.api.blizzard.com/hearthstone/cards?locale=en_US&set=rise-of-shadows&class=mage&manaCost=10&attack=4&health=10&collectible=1&rarity=legendary&type=minion&minionType=dragon&keyword=battlecry&textFilter=kalecgos&gameMode=constructed&page=1&pageSize=5&sort=name&order=desc&access_token=USw5k1VmbXIgoIEEWEEyIC8wxaoMKIvCsE
-    //     // `)
-    //   }
-
-      searchInputHandleSubmit = async (event) => {
+      searchInputHandleSubmit = async event => {
           event.preventDefault();
           this.setState({
               currentCardDisplaying : this.state.inputValue
             })
-            const response = await axios(`https://us.api.blizzard.com/hearthstone/cards?locale=en_US&textFilter=${this.state.inputValue}&access_token=USTpGP3452AvERB5jkzEJL9GUeoV2YgxTG
-            `)
+            const response = await axios(`https://us.api.blizzard.com/hearthstone/cards?locale=en_US&textFilter=${this.state.inputValue}&access_token=USTwhU8sZL0s8o2JtcTSTYp6KAUD4eIxxa`)
 
             this.setState({
-                gameData : response.data
+                gameData : response.data,
+                currentCardDisplayingArray : response.data.cards.slice(0,10)
               })
             console.log(this.state)
       }
@@ -42,13 +38,33 @@ class Container extends Component {
        
     }
 
+    addCardToArray = (i) => {
+            let joined = this.state.selectedCards;
+            this.setState({
+                selectedCards : joined.concat(this.state.currentCardDisplayingArray[i])
+            })
+            console.log(this.state.currentCardDisplayingArray[i])
+            console.log(this.state.selectedCards)
+    }
+
     render() { 
         console.log(this.state)
         return ( 
+
             <main className='container'>
+
+
                 <SearchInput handleSubmit={this.searchInputHandleSubmit.bind(this)} handleInput={this.handleInput}/>
-                <CardDisplay gameDataArray={this.state.gameData} />
+
+
+                <CardDisplay gameDataArray={this.state.gameData} onClickAddCardToArray={this.addCardToArray} />
+
+
+                <SelectedCardsArray selectedCards={this.state.selectedCards}/>
+
+
             </main>
+
          );
     }
 }
